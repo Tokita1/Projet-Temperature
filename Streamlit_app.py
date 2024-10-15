@@ -258,24 +258,24 @@ if page == pages[3] :
   """
   st.write(texte_modelisation_fm_1)
 
-    @st.cache
-    def perform_adfuller_test(series):
-        result = adfuller(series)
-        return result[0], result[1]
+@st.cache
+def perform_adfuller_test(series):
+    result = adfuller(series)
+    return result[0], result[1]
     
   #result = adfuller(df_ZonAnn_Ts_dSST['Glob'])
   #print(f'Statistique du test ADF : {result[0]}')
   #print(f'p-value: {result[1]}')
 
-    @st.cache
-    def fit_arima_model(data, order):
-        model = ARIMA(data, order=order)
-        model_fit = model.fit()
-        return model_fit
+@st.cache
+def fit_arima_model(data, order):
+    model = ARIMA(data, order=order)
+    model_fit = model.fit()
+    return model_fit
 
-    @st.cache
-    def make_predictions(model, steps):
-        return model.forecast(steps=steps)
+@st.cache
+def make_predictions(model, steps):
+    return model.forecast(steps=steps)
 
 #df_ZonAnn_Ts_dSST = load_data_zonann()
 
