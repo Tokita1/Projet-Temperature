@@ -1,9 +1,8 @@
 pandas
 numpy
 matplotlib
-#plotly.express
-#plotly.graph_objects
+plotly
 seaborn
 numpy
-#statsmodels
+scikit-learn
 streamlit
