@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 #df_GLB_NASA = pd.read_csv('https://raw.githubusercontent.com/Florian-Mtrt/Projet-Temperature/refs/heads/main/GLB.Ts%2BdSST.csv')
-df_GLB_NASA = pd.read_csv('GLB.Ts+dSST.csv')
+df_GLB_NASA = pd.read_csv('GLB.Ts+dSST.csv', header=1, index_col=0)
 
 st.title("Température Terrestre")
 
@@ -139,7 +139,7 @@ if page == pages[2] :
 
   df_GLB_NASA = df_GLB_NASA.replace('***', float('NaN'))
   df_GLB_NASA[df_GLB_NASA.columns[3:]] = df_GLB_NASA[df_GLB_NASA.columns[3:]].astype('float')
-  #df_GLB_NASA['Year']=df_GLB_NASA.index
+  df_GLB_NASA['Year']=df_GLB_NASA.index
 
   df_season = pd.melt(df_GLB_NASA, id_vars=['Year'], value_vars=['J-D','DJF','MAM','JJA','SON'])
   df_season = df_season.replace(['J-D','DJF','MAM','JJA','SON'],['Year','Winter','Spring','Summer','Autumn'])
