@@ -351,7 +351,7 @@ if page == pages[3] :
 
   # ---- VISUALISATION ---- #
 
-  fig_pred = plt.figure(figsize=(12, 8))
+  fig_pred = plt.figure(figsize=(16, 8))
 
   # Visualisation des données d'entraînement (avec les années réelles)
   plt.plot(train_data.index, train_data, label='Données d\'Entraînement')
