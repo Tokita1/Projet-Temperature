@@ -182,24 +182,23 @@ if page == pages[2] :
                      "Season": "Season",
                      "sub_Period": "Période"
                  },
-              width=1500)
+              width=500)
 
   st.plotly_chart(fig1)
 
   st.write("### 2. Swarmplot des écarts de température à la période de référence par saison et par période")
 
-  fig2 = plt.figure()
+
   sns.color_palette(palette = "OrRd", as_cmap=True)
-  sns.catplot(x = "Season", y = "Value", kind = "swarm", hue = 'Year', data = df_season, aspect=2, palette = "OrRd")
+  fig2 = sns.catplot(x = "Season", y = "Value", kind = "swarm", hue = 'Year', data = df_season, aspect=2, palette = "OrRd")
   plt.xlabel('Saisons')
   plt.ylabel('Ecart de températures')
   st.pyplot(fig2)
 
   st.write("### 3. Catplot des écarts de température à la période de référence par période et par saison")
 
-  fig3 = plt.figure()
   sns.color_palette(palette = "OrRd", as_cmap=True)
-  sns.catplot(x = "sub_Period", y = "Value", hue = 'Season', data = df_season.loc[df_season['Season'] != "Year"], aspect=2,palette = "OrRd")
+  fig3 = sns.catplot(x = "sub_Period", y = "Value", hue = 'Season', data = df_season.loc[df_season['Season'] != "Year"], aspect=2,palette = "OrRd")
   plt.xlabel('Périodes')
   plt.ylabel('Ecart de températures')
   st.pyplot(fig3)
@@ -215,7 +214,7 @@ if page == pages[2] :
                      "Season": "Season",
                      },
                     title="Nuage de points avec régression des moindres carrés",
-                    width=1000, height=800)
+                    width=1000, height=400)
   st.plotly_chart(fig4)
 
   st.write("### 5. Scatterplot des écarts de température à la période de référence par saison, regression localement pondérée")
@@ -230,7 +229,7 @@ if page == pages[2] :
                      "Season": "Season",
                  },
                  title="Evolution des écarts de températures avec lissage de nuage de points localement pondérée",
-                 width=1000, height=800)
+                 width=1000, height=400)
   st.plotly_chart(fig5)
 
 ##########################################################
