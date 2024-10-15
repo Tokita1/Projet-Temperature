@@ -5,5 +5,5 @@ plotly.express
 plotly.graph_objects
 seaborn
 numpy
-statsmodels
+#statsmodels
 streamlit
