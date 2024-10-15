@@ -1,6 +1,23 @@
+%%writefile streamlit_app.py
 import streamlit as st
+# <-- Insérer code Python contenant les commandes Streamlit dans le fichier streamlit_app.py
+import streamlit as st
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+import plotly.graph_objects as go
+from sklearn.model_selection import train_test_split
+from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.stattools import adfuller
+from sklearn.metrics import mean_squared_error
 
-pages = ["Page 1", "Page 2", "Page 3"]
+st.title("Température Terrestre")
+
+st.sidebar.title("Sommaire")
+pages=["Introduction au projet", "Compréhension et manipulation des données", "DataVisualisation", "Modélisation"]
+page=st.sidebar.radio("Aller vers", pages)
 
 ##########################################################
 #INTRODUCTION AU PROJET
