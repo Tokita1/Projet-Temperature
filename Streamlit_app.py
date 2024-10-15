@@ -246,6 +246,7 @@ if page == pages[3] :
   texte_modelisation_fm_1 = """
   Pour le choix du modèle, nous avons testé plusieurs algorithmes, parmi lesquels le modèle ARIMA a été retenu pour prédire les températures jusqu'en 2050.
   Ce modèle est particulièrement adapté à la modélisation des données climatiques, car il permet de gérer à la fois la tendance et la saisonnalité des données.
+  Ceci est un test
   """
   st.write(texte_modelisation_fm_1)
 
