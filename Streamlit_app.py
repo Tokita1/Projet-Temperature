@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
 
-#df_GLB_NASA = pd.read_csv('https://raw.githubusercontent.com/Florian-Mtrt/Projet-Temperature/refs/heads/main/GLB.Ts%2BdSST.csv')
+df_github = pd.read_csv('owid-co2-data.csv', header=0)
 df_GLB_NASA = pd.read_csv('GLB.Ts+dSST.csv', header=1, index_col=1)
+df_ZonAnn_Ts_dSST = pd.read_csv('ZonAnn.Ts+dSST.csv', header=0)
 
 st.title("Température Terrestre")
 
