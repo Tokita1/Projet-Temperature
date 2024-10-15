@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 #df_GLB_NASA = pd.read_csv('https://raw.githubusercontent.com/Florian-Mtrt/Projet-Temperature/refs/heads/main/GLB.Ts%2BdSST.csv')
-df_GLB_NASA = pd.read_csv('GLB.Ts+dSST.csv', header=1, index_col=0)
+df_GLB_NASA = pd.read_csv('GLB.Ts+dSST.csv', header=1, index_col=1)
 
 st.title("Température Terrestre")
 
