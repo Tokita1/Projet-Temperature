@@ -285,15 +285,15 @@ if page == pages[3] :
   st.write(f'Statistique du test ADF : {adf_stat}')
   st.write(f'p-value: {p_value}')
 
-    # Vérifier si la série est stationnaire
-    if p_value > 0.05:
-        # Différenciation des données pour rendre la série stationnaire
-        df_ZonAnn_Ts_dSST['Température Diff'] = df_ZonAnn_Ts_dSST['Glob'].diff().dropna()
+  # Vérifier si la série est stationnaire
+  if p_value > 0.05:
+      # Différenciation des données pour rendre la série stationnaire
+      df_ZonAnn_Ts_dSST['Température Diff'] = df_ZonAnn_Ts_dSST['Glob'].diff().dropna()
 
-    # Définir les paramètres ARIMA
-    p, d, q = 10, 3, 60
+  # Définir les paramètres ARIMA
+  p, d, q = 10, 3, 60
 
-    # Ajuster le modèle ARIMA
+  # Ajuster le modèle ARIMA
     #model = ARIMA(df_ZonAnn_Ts_dSST['Glob'], order=(p, d, q))
     #model_fit = model.fit()
     # Afficher l'AIC (Un AIC bas indique un meilleur modèle)
@@ -302,17 +302,17 @@ if page == pages[3] :
     #years = df_ZonAnn_Ts_dSST['Year'].values
     # Diviser les données en train et test
 
-    train_size = int(0.8 * len(df_ZonAnn_Ts_dSST))
-    train_data = df_ZonAnn_Ts_dSST['Glob'][:train_size]
-    test_data = df_ZonAnn_Ts_dSST['Glob'][train_size:]
+  train_size = int(0.8 * len(df_ZonAnn_Ts_dSST))
+  train_data = df_ZonAnn_Ts_dSST['Glob'][:train_size]
+  test_data = df_ZonAnn_Ts_dSST['Glob'][train_size:]
 
     # Ajuster le modèle ARIMA sur les données d'entraînement
-    model_fit = fit_arima_model(train_data, order=(p, d, q))
+  model_fit = fit_arima_model(train_data, order=(p, d, q))
 
     # Prédictions sur l'ensemble de test
-    predictions = make_predictions(model_fit, len(test_data))
-    mse_arima = mean_squared_error(test_data, predictions)
-    st.write(f'Erreur Quadratique Moyenne du modèle ARIMA: {mse_arima}')
+  predictions = make_predictions(model_fit, len(test_data))
+  mse_arima = mean_squared_error(test_data, predictions)
+  st.write(f'Erreur Quadratique Moyenne du modèle ARIMA: {mse_arima}')
 
     # Redéfinir l'index avec les années réelles
     #train_data.index = df_ZonAnn_Ts_dSST['Year'][:train_size]
@@ -322,11 +322,11 @@ if page == pages[3] :
     #model_fit = model.fit()
 
     # Ajuster le modèle sur toutes les données historiques
-    model_full_fit_G = fit_arima_model(df_ZonAnn_Ts_dSST['Glob'], order=(p, d, q))
+  model_full_fit_G = fit_arima_model(df_ZonAnn_Ts_dSST['Glob'], order=(p, d, q))
 
     # Prédictions futures
-    years_to_predict = 2050 - 2023 + 1
-    future_predictions_G = make_predictions(model_full_fit_G, steps=years_to_predict)
+  years_to_predict = 2050 - 2023 + 1
+  future_predictions_G = make_predictions(model_full_fit_G, steps=years_to_predict)
 
     # Prédictions sur l'ensemble de test
     #predictions = model_fit.forecast(steps=len(test_data))
@@ -334,8 +334,8 @@ if page == pages[3] :
     #print(f'Erreur Quadratique Moyenne du modèle ARIMA: {mse_arima}')
 
     # Créer un DataFrame pour les années futures
-    future_years = np.arange(2023, 2051)
-    future_df_G = pd.DataFrame({'Year': future_years, 'Prédictions': future_predictions_G})
+  future_years = np.arange(2023, 2051)
+  future_df_G = pd.DataFrame({'Year': future_years, 'Prédictions': future_predictions_G})
 
       ########## AJOUT DES PRÉDICTIONS FUTURES GLOBAL JUSQU'EN 2050 ##########
 
@@ -387,15 +387,15 @@ if page == pages[3] :
       #future_df_S = pd.DataFrame({'Year': np.append([2023], future_years), 'Prédictions': future_predictions_S})
     
     # ---- VISUALISATION ---- #
-    fig_pred = plt.figure(figsize=(12, 8))
-    plt.plot(train_data.index, train_data, label='Données d\'Entraînement')
-    plt.plot(test_data.index, test_data, color='blue', label='Données Réelles')
-    plt.plot(future_df_G['Year'], future_df_G['Prédictions'], color='green', linestyle='--', label='Prédictions Futures ARIMA')
-    plt.title('Données historiques avec des prédictions ARIMA pour les 25 prochaines années (1880 à 2050)')
-    plt.xlabel('Année')
-    plt.ylabel('Température Globale (°C)')
-    plt.legend()
-    st.pyplot(fig_pred)
+  fig_pred = plt.figure(figsize=(12, 8))
+  plt.plot(train_data.index, train_data, label='Données d\'Entraînement')
+  plt.plot(test_data.index, test_data, color='blue', label='Données Réelles')
+  plt.plot(future_df_G['Year'], future_df_G['Prédictions'], color='green', linestyle='--', label='Prédictions Futures ARIMA')
+  plt.title('Données historiques avec des prédictions ARIMA pour les 25 prochaines années (1880 à 2050)')
+  plt.xlabel('Année')
+  plt.ylabel('Température Globale (°C)')
+  plt.legend()
+  st.pyplot(fig_pred)
 
       #fig_pred = plt.figure(figsize=(12, 8))
 
