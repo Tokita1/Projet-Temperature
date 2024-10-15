@@ -266,7 +266,7 @@ if page == pages[3] :
 
   @st.cache
   def train_model(data):
-      model = ARIMA(data, order=(10, 3, 60))
+      model = ARIMA(data, order=(1, 1, 1))
       model_fit = model.fit()
       return model_fit
 
