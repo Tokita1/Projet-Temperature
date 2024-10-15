@@ -11,18 +11,22 @@ from statsmodels.tsa.stattools import adfuller
 from sklearn.metrics import mean_squared_error
 
 @st.cache
-def load_data():
-    df_github = pd.read_csv('owidco2data.csv', header=0)
-    return df_github
+def load_data_owid():
+    return pd.read_csv('owidco2data.csv', header=0)
 
-def load_data():
-    df_GLB_NASA = pd.read_csv('GLB.Ts+dSST.csv', header=1, index_col=1)
-    return df_GLB_NASA
+@st.cache
+def load_data_nasa():
+    return pd.read_csv('GLB.Ts+dSST.csv', header=1, index_col=1)
 
-def load_data():
-    df_ZonAnn_Ts_dSST = pd.read_csv('ZonAnn.Ts+dSST.csv', header=0)
-    return df_ZonAnn_Ts_dSST
-  
+@st.cache
+def load_data_zonann():
+    return pd.read_csv('ZonAnn.Ts+dSST.csv', header=0)
+
+# Chargement des données
+df_github = load_data_owid()
+df_GLB_NASA = load_data_nasa()
+df_ZonAnn_Ts_dSST = load_data_zonann()
+
 #df_github = pd.read_csv('owidco2data.csv', header=0)
 #df_GLB_NASA = pd.read_csv('GLB.Ts+dSST.csv', header=1, index_col=1)
 #df_ZonAnn_Ts_dSST = pd.read_csv('ZonAnn.Ts+dSST.csv', header=0)
