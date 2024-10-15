@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 import plotly.express as px
 
 df_github = pd.read_csv('owidco2data.csv', header=0)
