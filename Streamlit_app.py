@@ -269,14 +269,14 @@ if page == pages[3] :
   #print(f'p-value: {result[1]}')
 
   @st.cache
-  def fit_arima_model(data, order):
-      model = ARIMA(data, order=order)
+  def train_model(data):
+      model = ARIMA(data, order=(p, d, q))
       model_fit = model.fit()
       return model_fit
 
   @st.cache
-  def make_predictions(model, steps):
-      return model.forecast(steps=steps)
+  def make_predictions(model_fit, steps):
+      return model_fit.forecast(steps=steps)
 
 #df_ZonAnn_Ts_dSST = load_data_zonann()
 
@@ -307,7 +307,7 @@ if page == pages[3] :
   test_data = df_ZonAnn_Ts_dSST['Glob'][train_size:]
 
     # Ajuster le modèle ARIMA sur les données d'entraînement
-  model_fit = fit_arima_model(train_data, order=(p, d, q))
+  model_fit = train_model(df_ZonAnn_Ts_dSST['Glob'])
 
     # Prédictions sur l'ensemble de test
   predictions = make_predictions(model_fit, len(test_data))
