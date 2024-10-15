@@ -21,3 +21,105 @@ if page == pages[0] :
   Aucun des membres du projet n’a d’expérience dans l’analyse du réchauffement climatique.
   """
   st.write(texte_introduction_au_projet)
+
+##########################################################
+#COMPRÉHENSION ET MANIPULATION DES DONNÉES
+##########################################################
+
+if page == pages[1] :
+  st.write("### II. COMPRÉHENSION ET MANIPULATION DES DONNÉES")
+  st.write("#### Cadre")
+  texte_cadre = """
+  Les données utilisées sont celles de la NASA et de Our World in Data. Elles sont accessibles librement sur le site de la NASA et via GitHub.
+  Concernant les données de la NASA nous avons accès à 4 fichiers. GLB, NH et SH sont structurés en 145 lignes de 19 colonnes.
+  ZonAnn est organisé en 144 lignes sur 15 colonnes. Nous avons une ligne de moins car nous n’avons pas de données pour l’année 2024.
+
+  Concernant les données GitHub, nous y trouvons 47416 lignes pour 79 colonnes.
+
+  Rappel des ressources à consulter :
+
+  NASA : https://data.giss.nasa.gov/gistemp/
+  GitHub : https://github.com/owid/co2-data
+  """
+  st.write(texte_cadre)
+
+  st.write("#### Pertinence")
+  texte_pertinence = """
+  Quelles variables vous semblent les plus pertinentes au regard de vos objectifs ?
+  Les variables les plus pertinentes que nous avons sélectionnées pour établir nos datavisualisations sont :
+
+  NASA :
+
+  - la période (année/mois/saisons) pour suivre les évolutions dans le temps
+  - les écarts de température au fil du temps
+  - le zonage géographique (hémisphères)
+
+  GitHub :
+
+  - Nom des pays
+  - ISO CODE des pays
+  - Années
+  - Densité de population par pays
+  - Émissions total annuelles de CO₂ (en millions de tonnes)
+  - Émissions annuelles de CO₂ (par habitant)
+  - Émissions cumulées totales de CO₂ (en millions de tonnes)
+  - Consommation d'énergie primaire par habitant (en kWh par habitant)
+  - Émissions annuelles de CO₂ liées au changement d’affectation des terres (en millions de tonnes)
+  - Émissions annuelles de CO₂ liées au changement d’affectation des terres (en millions de tonnes par habitant)
+  - Consommation d'énergie primaire (en térawattheures)
+  - Changement de la température moyenne mondiale provoqué par les émissions de méthane (en °C)
+  - Modification de la température moyenne mondiale provoqué par les émissions de CO₂ (en °C)
+  - Modification de la température moyenne mondiale provoqué par les Gaz à effet de serre (en °C)
+  - Modification de la température moyenne mondiale provoqué par les émissions d'oxyde d'azote (en °C)
+  - Émissions totales de gaz à effet de serre (en millions de tonnes)
+
+
+  Quelle est la variable cible ?
+
+  Notre principale variable cible est l’écart de température par rapport à la moyenne comprise pour la période 1951-1980 (Dataframe de la NASA).
+
+  Quelles particularités de votre jeu de données pouvez-vous mettre en avant ?
+
+  Les données provenant de GitHub ne couvrent pas les mêmes périodes que les données fournies par la NASA (Les données de la NASA couvrent la période de 1880 jusqu'à aujourd'hui, tandis que les données de GitHub incluent des informations antérieures à 1880.)
+  Les données provenant de GitHub ont énormément de valeurs manquantes.
+  Cela peut entraîner un manque d’information (NaN) qui peut poser problème pour la partie visualisation. Nous avons choisi de ne pas garder ses “NaN” pour ne pas influencer les graphiques.
+  Il y a également beaucoup d'occurrences répétées pour le même pays ou “code iso” dans le fichier GitHub.
+
+  Etes-vous limités par certaines de vos données ?
+
+  Certaines variables contiennent très peu d'informations, ce qui limite leur utilisation à des plus petites périodes d’observation.
+  """
+  st.write(texte_pertinence)
+
+  st.write("### Pre-processing et feature engineering")
+  texte_Pre_processing = """
+  Avez-vous eu à nettoyer et à traiter les données ? Si oui, décrivez votre processus de traitement.
+
+  Oui, sur le dataset de la NASA GLB_Ts_dSST il a fallu opérer quelques modifications  :
+  remplacer les *** par NaN pour pouvoir convertir les colonnes de valeurs en type ‘float’
+  dé-pivoter les colonnes de ‘mois’ en lignes avec pd.melt
+  encoder en valeur numérique les variables mois en valeur alphabétique
+  concaténer 'année’ et ‘mois’ pour utiliser le date_time pandas
+  encoder les périodes de 3 mois pour faire les 4 saisons
+
+  Concernant GitHub, pour faire le merge (la fusion) des deux dataframes NASA  GLB_Ts_dSST et GitHub il a également fallu également opérer des transformations :
+  faire un sous dataframe de Github pour filtrer sur la variable country = ‘world’ pour corréler à la zone géographique du dataset de la NASA  GLB_Ts_dSST
+  filtrer sur la variable Year supérieur ou égal à  1880 pour corréler avec la période d’observation du dataset de la NASA  GLB_Ts_dSST
+  ne retenir que les variables utiles et pertinentes du dataset GitHub (78 colonnes dans Github, trop d’information)
+
+  Concernant le graphique représentant la hausse de la température moyenne mondiale par zones (globe terrestre).
+
+  Créer des sous Dataframes de “wid-co2-data” et “ZonAnn_Ts_dSST” pour conserver uniquement les variables utiles au graphique.
+  Renommer la colonne “year” pour pouvoir effectuer un merge des Dataframes par la suite.
+  Créer 2 dictionnaires, le premier est un mapping entre les codes ISO et les hémisphères (Sud - Équateur - Nord).
+  Le second un mapping entre les codes ISO et les zones par hémisphères (3 zones pour le Sud et le Nord, 2 pour l’équateur).
+  L’ajout des colonnes “hemisphere” et “zones” pour chaque dataframes.
+  L’ajout d’une colonne “temperature” qui récupère le bon écart de température en fonction de la colonne “hemisphere” ou “zones”.
+  Puis la création de la carte choroplèthe sous Plotly
+
+  Avez-vous dû procéder à des transformations de vos données de type normalisation/standardisation ? Si oui, pourquoi ?
+  Envisagez-vous des techniques de réduction de dimension dans la partie de modélisation ? Si oui, pourquoi ?
+
+  Nous inclurons dans notre prochain rapport une section dédiée au machine learning, qui nous permettra de mieux comprendre et anticiper le réchauffement climatique.
+  """
+  st.write(texte_Pre_processing)
