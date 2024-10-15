@@ -10,6 +10,19 @@ from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.stattools import adfuller
 from sklearn.metrics import mean_squared_error
 
+@st.cache
+def load_data():
+    df_github = pd.read_csv('owidco2data.csv', header=0)
+    return df_github
+
+def load_data():
+    df_GLB_NASA = pd.read_csv('GLB.Ts+dSST.csv', header=1, index_col=1)
+    return df_GLB_NASA
+
+def load_data():
+    df_ZonAnn_Ts_dSST = pd.read_csv('ZonAnn.Ts+dSST.csv', header=0)
+    return df_ZonAnn_Ts_dSST
+  
 #df_github = pd.read_csv('owidco2data.csv', header=0)
 #df_GLB_NASA = pd.read_csv('GLB.Ts+dSST.csv', header=1, index_col=1)
 #df_ZonAnn_Ts_dSST = pd.read_csv('ZonAnn.Ts+dSST.csv', header=0)
