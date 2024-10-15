@@ -291,7 +291,7 @@ if page == pages[3] :
   test_data = df_ZonAnn_Ts_dSST['Glob'][train_size:]
 
   # Ajuster le modèle ARIMA sur les données d'entraînement
-  model_fit = train_model(train_data)
+  model_fit = train_model(df_ZonAnn_Ts_dSST['Glob'])
 
   # Prédictions sur l'ensemble de test
   predictions = make_predictions(model_fit, len(test_data))
