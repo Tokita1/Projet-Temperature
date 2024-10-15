@@ -1,7 +1,6 @@
 import streamlit as st
 
 pages = ["Page 1", "Page 2", "Page 3"]
-page = st.sidebar.selectbox("Choisir une page", pages)
 
 ##########################################################
 #INTRODUCTION AU PROJET
