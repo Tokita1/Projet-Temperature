@@ -195,15 +195,6 @@ if page == pages[2] :
   plt.ylabel('Ecart de températures')
   st.pyplot(fig2)
 
-  st.write("### 2. Swarmplot des écarts de température à la période de référence par saison et par période")
-
-  fig2 = plt.figure()
-  sns.color_palette(palette = "OrRd", as_cmap=True)
-  sns.catplot(x = "Season", y = "Value", kind = "swarm", hue = 'Year', data = df_season, aspect=2, palette = "OrRd")
-  plt.xlabel('Saisons')
-  plt.ylabel('Ecart de températures')
-  st.pyplot(fig2)
-
   st.write("### 3. Catplot des écarts de température à la période de référence par période et par saison")
 
   fig3 = plt.figure()
