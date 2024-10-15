@@ -240,7 +240,8 @@ if page == pages[3] :
   Ce modèle est particulièrement adapté à la modélisation des données climatiques, car il permet de gérer à la fois la tendance et la saisonnalité des données.
   """
   st.write(texte_modelisation_fm_1)
-
+  
+'''
   result = adfuller(df_ZonAnn_Ts_dSST['Glob'])
   print(f'Statistique du test ADF : {result[0]}')
   print(f'p-value: {result[1]}')
@@ -359,3 +360,4 @@ if page == pages[3] :
   Pour avoir une vue d'ensemble, visualisons les prédictions de température pour les 2 hémisphères avec la tendence globale
   """
   st.write(texte_modelisation_fm_2)
+'''
