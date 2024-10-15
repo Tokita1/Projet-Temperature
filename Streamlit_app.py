@@ -11,8 +11,8 @@ from statsmodels.tsa.stattools import adfuller
 from sklearn.metrics import mean_squared_error
 
 #df_github = pd.read_csv('owidco2data.csv', header=0)
-df_GLB_NASA = pd.read_csv('GLB.Ts+dSST.csv', header=1, index_col=1)
-df_ZonAnn_Ts_dSST = pd.read_csv('ZonAnn.Ts+dSST.csv', header=0)
+#df_GLB_NASA = pd.read_csv('GLB.Ts+dSST.csv', header=1, index_col=1)
+#df_ZonAnn_Ts_dSST = pd.read_csv('ZonAnn.Ts+dSST.csv', header=0)
 
 st.title("Température Terrestre")
 
