@@ -268,10 +268,13 @@ if page == pages[3] :
   def train_model(data):
       model = ARIMA(data, order=(1, 1, 1))
       model_fit = model.fit()
-      return model_fit
+      return model_fit.aic  # Retourne une valeur simple pour éviter des objets non hashables
 
   @st.cache
-  def make_predictions(model_fit, steps):
+  def make_predictions(model_fit_aic, steps):
+      # Ajuste le modèle ici pour effectuer des prédictions
+      model = ARIMA(train_data, order=(1, 1, 1))  # Entraîne à nouveau
+      model_fit = model.fit()  # Fit le modèle
       return model_fit.forecast(steps=steps)
 
   df_ZonAnn_Ts_dSST = load_data_zonann()
@@ -283,24 +286,24 @@ if page == pages[3] :
 
   # Vérifier si la série est stationnaire
   if p_value > 0.05:
-      df_ZonAnn_Ts_dSST['Température Diff'] = df_ZonAnn_Ts_dSST['Glob'].diff().dropna()
+      df_ZonAnn_Ts_dSST['Glob'] = df_ZonAnn_Ts_dSST['Glob'].diff().dropna()
 
   # Diviser les données en train et test
   train_size = int(0.8 * len(df_ZonAnn_Ts_dSST))
-  train_data = df_ZonAnn_Ts_dSST['Glob'][:train_size]
-  test_data = df_ZonAnn_Ts_dSST['Glob'][train_size:]
+  train_data = df_ZonAnn_Ts_dSST['Glob'][:train_size].dropna()
+  test_data = df_ZonAnn_Ts_dSST['Glob'][train_size:].dropna()
 
   # Ajuster le modèle ARIMA sur les données d'entraînement
-  model_fit = train_model(df_ZonAnn_Ts_dSST['Glob'])
+  model_fit_aic = train_model(train_data)
 
   # Prédictions sur l'ensemble de test
-  predictions = make_predictions(model_fit, len(test_data))
+  predictions = make_predictions(model_fit_aic, len(test_data))
   mse_arima = mean_squared_error(test_data, predictions)
   st.write(f'Erreur Quadratique Moyenne du modèle ARIMA: {mse_arima}')
 
   # Prédictions futures
   years_to_predict = 2050 - 2023 + 1
-  future_predictions_G = make_predictions(model_fit, steps=years_to_predict)
+  future_predictions_G = make_predictions(model_fit_aic, steps=years_to_predict)
 
   # Créer un DataFrame pour les années futures
   future_years = np.arange(2023, 2051)
