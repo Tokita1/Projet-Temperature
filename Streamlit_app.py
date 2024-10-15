@@ -258,158 +258,158 @@ if page == pages[3] :
   """
   st.write(texte_modelisation_fm_1)
 
-@st.cache
-def perform_adfuller_test(series):
-    result = adfuller(series)
-    return result[0], result[1]
+    @st.cache
+    def perform_adfuller_test(series):
+        result = adfuller(series)
+        return result[0], result[1]
     
   #result = adfuller(df_ZonAnn_Ts_dSST['Glob'])
   #print(f'Statistique du test ADF : {result[0]}')
   #print(f'p-value: {result[1]}')
 
-@st.cache
-def fit_arima_model(data, order):
-    model = ARIMA(data, order=order)
-    model_fit = model.fit()
-    return model_fit
+    @st.cache
+    def fit_arima_model(data, order):
+        model = ARIMA(data, order=order)
+        model_fit = model.fit()
+        return model_fit
 
-@st.cache
-def make_predictions(model, steps):
-    return model.forecast(steps=steps)
+    @st.cache
+    def make_predictions(model, steps):
+        return model.forecast(steps=steps)
 
 #df_ZonAnn_Ts_dSST = load_data_zonann()
 
-# Test de stationnarité
-adf_stat, p_value = perform_adfuller_test(df_ZonAnn_Ts_dSST['Glob'])
-st.write(f'Statistique du test ADF : {adf_stat}')
-st.write(f'p-value: {p_value}')
+    # Test de stationnarité
+    adf_stat, p_value = perform_adfuller_test(df_ZonAnn_Ts_dSST['Glob'])
+    st.write(f'Statistique du test ADF : {adf_stat}')
+    st.write(f'p-value: {p_value}')
 
-# Vérifier si la série est stationnaire
-if p_value > 0.05:
-    # Différenciation des données pour rendre la série stationnaire
-    df_ZonAnn_Ts_dSST['Température Diff'] = df_ZonAnn_Ts_dSST['Glob'].diff().dropna()
+    # Vérifier si la série est stationnaire
+    if p_value > 0.05:
+        # Différenciation des données pour rendre la série stationnaire
+        df_ZonAnn_Ts_dSST['Température Diff'] = df_ZonAnn_Ts_dSST['Glob'].diff().dropna()
 
-# Définir les paramètres ARIMA
-p, d, q = 10, 3, 60
+    # Définir les paramètres ARIMA
+    p, d, q = 10, 3, 60
 
-# Ajuster le modèle ARIMA
-#model = ARIMA(df_ZonAnn_Ts_dSST['Glob'], order=(p, d, q))
-#model_fit = model.fit()
-# Afficher l'AIC (Un AIC bas indique un meilleur modèle)
-#print(f'AIC: {model_fit.aic}')
-# Définir les années de la série historique (ex: 1880 à 2023)
-#years = df_ZonAnn_Ts_dSST['Year'].values
-# Diviser les données en train et test
+    # Ajuster le modèle ARIMA
+    #model = ARIMA(df_ZonAnn_Ts_dSST['Glob'], order=(p, d, q))
+    #model_fit = model.fit()
+    # Afficher l'AIC (Un AIC bas indique un meilleur modèle)
+    #print(f'AIC: {model_fit.aic}')
+    # Définir les années de la série historique (ex: 1880 à 2023)
+    #years = df_ZonAnn_Ts_dSST['Year'].values
+    # Diviser les données en train et test
 
-train_size = int(0.8 * len(df_ZonAnn_Ts_dSST))
-train_data = df_ZonAnn_Ts_dSST['Glob'][:train_size]
-test_data = df_ZonAnn_Ts_dSST['Glob'][train_size:]
+    train_size = int(0.8 * len(df_ZonAnn_Ts_dSST))
+    train_data = df_ZonAnn_Ts_dSST['Glob'][:train_size]
+    test_data = df_ZonAnn_Ts_dSST['Glob'][train_size:]
 
-# Ajuster le modèle ARIMA sur les données d'entraînement
-model_fit = fit_arima_model(train_data, order=(p, d, q))
+    # Ajuster le modèle ARIMA sur les données d'entraînement
+    model_fit = fit_arima_model(train_data, order=(p, d, q))
 
-# Prédictions sur l'ensemble de test
-predictions = make_predictions(model_fit, len(test_data))
-mse_arima = mean_squared_error(test_data, predictions)
-st.write(f'Erreur Quadratique Moyenne du modèle ARIMA: {mse_arima}')
+    # Prédictions sur l'ensemble de test
+    predictions = make_predictions(model_fit, len(test_data))
+    mse_arima = mean_squared_error(test_data, predictions)
+    st.write(f'Erreur Quadratique Moyenne du modèle ARIMA: {mse_arima}')
 
-# Redéfinir l'index avec les années réelles
-#train_data.index = df_ZonAnn_Ts_dSST['Year'][:train_size]
-#test_data.index = df_ZonAnn_Ts_dSST['Year'][train_size:]
-# Ajuster le modèle ARIMA sur les données d'entraînement
-#model = ARIMA(train_data, order=(p, d, q))
-#model_fit = model.fit()
+    # Redéfinir l'index avec les années réelles
+    #train_data.index = df_ZonAnn_Ts_dSST['Year'][:train_size]
+    #test_data.index = df_ZonAnn_Ts_dSST['Year'][train_size:]
+    # Ajuster le modèle ARIMA sur les données d'entraînement
+    #model = ARIMA(train_data, order=(p, d, q))
+    #model_fit = model.fit()
 
-# Ajuster le modèle sur toutes les données historiques
-model_full_fit_G = fit_arima_model(df_ZonAnn_Ts_dSST['Glob'], order=(p, d, q))
+    # Ajuster le modèle sur toutes les données historiques
+    model_full_fit_G = fit_arima_model(df_ZonAnn_Ts_dSST['Glob'], order=(p, d, q))
 
-# Prédictions futures
-years_to_predict = 2050 - 2023 + 1
-future_predictions_G = make_predictions(model_full_fit_G, steps=years_to_predict)
+    # Prédictions futures
+    years_to_predict = 2050 - 2023 + 1
+    future_predictions_G = make_predictions(model_full_fit_G, steps=years_to_predict)
 
-# Prédictions sur l'ensemble de test
-#predictions = model_fit.forecast(steps=len(test_data))
-#mse_arima = mean_squared_error(test_data, predictions)
-#print(f'Erreur Quadratique Moyenne du modèle ARIMA: {mse_arima}')
+    # Prédictions sur l'ensemble de test
+    #predictions = model_fit.forecast(steps=len(test_data))
+    #mse_arima = mean_squared_error(test_data, predictions)
+    #print(f'Erreur Quadratique Moyenne du modèle ARIMA: {mse_arima}')
 
-# Créer un DataFrame pour les années futures
-future_years = np.arange(2023, 2051)
-future_df_G = pd.DataFrame({'Year': future_years, 'Prédictions': future_predictions_G})
+    # Créer un DataFrame pour les années futures
+    future_years = np.arange(2023, 2051)
+    future_df_G = pd.DataFrame({'Year': future_years, 'Prédictions': future_predictions_G})
 
-  ########## AJOUT DES PRÉDICTIONS FUTURES GLOBAL JUSQU'EN 2050 ##########
+      ########## AJOUT DES PRÉDICTIONS FUTURES GLOBAL JUSQU'EN 2050 ##########
 
-  # Étendre le modèle à l'ensemble des données (train + test)
+      # Étendre le modèle à l'ensemble des données (train + test)
 
-  #full_data_G = df_ZonAnn_Ts_dSST['Glob'] # Températures global
-  #full_data_N = df_ZonAnn_Ts_dSST['NHem'] # Températures NORD
-  #full_data_S = df_ZonAnn_Ts_dSST['SHem'] # Températures SUD
-  #full_data_G.index = df_ZonAnn_Ts_dSST['Year'] # Index basé sur les années
-  #full_data_N.index = df_ZonAnn_Ts_dSST['Year'] # Index basé sur les années
-  #full_data_S.index = df_ZonAnn_Ts_dSST['Year'] # Index basé sur les années
+      #full_data_G = df_ZonAnn_Ts_dSST['Glob'] # Températures global
+      #full_data_N = df_ZonAnn_Ts_dSST['NHem'] # Températures NORD
+      #full_data_S = df_ZonAnn_Ts_dSST['SHem'] # Températures SUD
+      #full_data_G.index = df_ZonAnn_Ts_dSST['Year'] # Index basé sur les années
+      #full_data_N.index = df_ZonAnn_Ts_dSST['Year'] # Index basé sur les années
+      #full_data_S.index = df_ZonAnn_Ts_dSST['Year'] # Index basé sur les années
 
-  # Réajuster le modèle ARIMA sur toutes les données historiques jusqu'à 2023
+      # Réajuster le modèle ARIMA sur toutes les données historiques jusqu'à 2023
 
-  #model_full_G = ARIMA(full_data_G, order=(p, d, q)) # Températures global
-  #model_full_fit_G = model_full_G.fit()
+      #model_full_G = ARIMA(full_data_G, order=(p, d, q)) # Températures global
+      #model_full_fit_G = model_full_G.fit()
 
-  #model_full_N = ARIMA(full_data_N, order=(p, d, q)) # Températures NORD
-  #model_full_fit_N = model_full_N.fit()
+      #model_full_N = ARIMA(full_data_N, order=(p, d, q)) # Températures NORD
+      #model_full_fit_N = model_full_N.fit()
 
-  #model_full_S = ARIMA(full_data_S, order=(p, d, q)) # Températures SUD
-  #model_full_fit_S = model_full_S.fit()
+      #model_full_S = ARIMA(full_data_S, order=(p, d, q)) # Températures SUD
+      #model_full_fit_S = model_full_S.fit()
 
-  # Faire des prédictions à partir de 2023 jusqu'en 2050
+      # Faire des prédictions à partir de 2023 jusqu'en 2050
 
-  #start_year = 2023
-  #end_year = 2050
-  #years_to_predict = end_year - start_year + 1
+      #start_year = 2023
+      #end_year = 2050
+      #years_to_predict = end_year - start_year + 1
 
-  # Utiliser la dernière valeur réelle comme point de départ pour les prédictions futures
-  #last_value = full_data_G.iloc[-1]
-  #last_value = full_data_N.iloc[-1]
-  #last_value = full_data_S.iloc[-1]
+      # Utiliser la dernière valeur réelle comme point de départ pour les prédictions futures
+      #last_value = full_data_G.iloc[-1]
+      #last_value = full_data_N.iloc[-1]
+      #last_value = full_data_S.iloc[-1]
 
-  # Générer les prédictions futures à partir de la dernière année disponible
-  #future_predictions_G = model_full_fit_G.forecast(steps=years_to_predict)
-  #future_predictions_N = model_full_fit_N.forecast(steps=years_to_predict)
-  #future_predictions_S = model_full_fit_S.forecast(steps=years_to_predict)
+      # Générer les prédictions futures à partir de la dernière année disponible
+      #future_predictions_G = model_full_fit_G.forecast(steps=years_to_predict)
+      #future_predictions_N = model_full_fit_N.forecast(steps=years_to_predict)
+      #future_predictions_S = model_full_fit_S.forecast(steps=years_to_predict)
 
-  # Ajouter la dernière valeur réelle à la série de prédictions futures pour assurer la continuité
-  #future_predictions_G = np.concatenate([[last_value], future_predictions_G])
-  #future_predictions_N = np.concatenate([[last_value], future_predictions_N])
-  #future_predictions_S = np.concatenate([[last_value], future_predictions_S])
+      # Ajouter la dernière valeur réelle à la série de prédictions futures pour assurer la continuité
+      #future_predictions_G = np.concatenate([[last_value], future_predictions_G])
+      #future_predictions_N = np.concatenate([[last_value], future_predictions_N])
+      #future_predictions_S = np.concatenate([[last_value], future_predictions_S])
 
-  # Créer un DataFrame pour les années futures
-  #future_years = np.arange(start_year, end_year + 1)
-  #future_df_G = pd.DataFrame({'Year': np.append([2023], future_years), 'Prédictions': future_predictions_G})
-  #future_df_N = pd.DataFrame({'Year': np.append([2023], future_years), 'Prédictions': future_predictions_N})
-  #future_df_S = pd.DataFrame({'Year': np.append([2023], future_years), 'Prédictions': future_predictions_S})
+      # Créer un DataFrame pour les années futures
+      #future_years = np.arange(start_year, end_year + 1)
+      #future_df_G = pd.DataFrame({'Year': np.append([2023], future_years), 'Prédictions': future_predictions_G})
+      #future_df_N = pd.DataFrame({'Year': np.append([2023], future_years), 'Prédictions': future_predictions_N})
+      #future_df_S = pd.DataFrame({'Year': np.append([2023], future_years), 'Prédictions': future_predictions_S})
+    
+    # ---- VISUALISATION ---- #
+    fig_pred = plt.figure(figsize=(12, 8))
+    plt.plot(train_data.index, train_data, label='Données d\'Entraînement')
+    plt.plot(test_data.index, test_data, color='blue', label='Données Réelles')
+    plt.plot(future_df_G['Year'], future_df_G['Prédictions'], color='green', linestyle='--', label='Prédictions Futures ARIMA')
+    plt.title('Données historiques avec des prédictions ARIMA pour les 25 prochaines années (1880 à 2050)')
+    plt.xlabel('Année')
+    plt.ylabel('Température Globale (°C)')
+    plt.legend()
+    st.pyplot(fig_pred)
 
-# ---- VISUALISATION ---- #
-fig_pred = plt.figure(figsize=(12, 8))
-plt.plot(train_data.index, train_data, label='Données d\'Entraînement')
-plt.plot(test_data.index, test_data, color='blue', label='Données Réelles')
-plt.plot(future_df_G['Year'], future_df_G['Prédictions'], color='green', linestyle='--', label='Prédictions Futures ARIMA')
-plt.title('Données historiques avec des prédictions ARIMA pour les 25 prochaines années (1880 à 2050)')
-plt.xlabel('Année')
-plt.ylabel('Température Globale (°C)')
-plt.legend()
-st.pyplot(fig_pred)
+      #fig_pred = plt.figure(figsize=(12, 8))
 
-  #fig_pred = plt.figure(figsize=(12, 8))
+      # Visualisation des données d'entraînement (avec les années réelles)
+      #plt.plot(train_data.index, train_data, label='Données d\'Entraînement')
 
-  # Visualisation des données d'entraînement (avec les années réelles)
-  #plt.plot(train_data.index, train_data, label='Données d\'Entraînement')
+      # Visualisation des données de test (réelles)
+      #plt.plot(test_data.index, test_data, color='blue', label='Données Réelles')
 
-  # Visualisation des données de test (réelles)
-  #plt.plot(test_data.index, test_data, color='blue', label='Données Réelles')
+      # Visualisation des prédictions futures de 2023 à 2050 (à partir de la dernière année des données réelles)
+      #plt.plot(future_df_G['Year'], future_df_G['Prédictions'], color='green', linestyle='--', label='Prédictions Futures ARIMA')
 
-  # Visualisation des prédictions futures de 2023 à 2050 (à partir de la dernière année des données réelles)
-  #plt.plot(future_df_G['Year'], future_df_G['Prédictions'], color='green', linestyle='--', label='Prédictions Futures ARIMA')
-
-  # Personnalisation du graphique
-  #plt.title('Données historique avec une prédictions ARIMA pour les 25 prochaines années (1880 à 2050)')
-  #plt.xlabel('Année')
-  #plt.ylabel('Température Globale (°C)')
-  #plt.legend()
-  #st.plotly_chart(fig_pred)
+      # Personnalisation du graphique
+      #plt.title('Données historique avec une prédictions ARIMA pour les 25 prochaines années (1880 à 2050)')
+      #plt.xlabel('Année')
+      #plt.ylabel('Température Globale (°C)')
+      #plt.legend()
+      #st.plotly_chart(fig_pred)
