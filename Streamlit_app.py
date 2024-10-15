@@ -1,4 +1,3 @@
-pip install matplotlib
 
 import streamlit as st
 # <-- Insérer code Python contenant les commandes Streamlit dans le fichier streamlit_app.py
