@@ -1,8 +1,14 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
-import plotly.express as px
 import seaborn as sns
+import plotly.express as px
+import plotly.graph_objects as go
+from sklearn.model_selection import train_test_split
+from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.stattools import adfuller
+from sklearn.metrics import mean_squared_error
 
 df_github = pd.read_csv('owidco2data.csv', header=0)
 df_GLB_NASA = pd.read_csv('GLB.Ts+dSST.csv', header=1, index_col=1)
