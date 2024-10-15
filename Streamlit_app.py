@@ -274,7 +274,7 @@ if page == pages[3] :
   def make_predictions(model_fit, steps):
       return model_fit.forecast(steps=steps)
 
-  df_ZonAnn_Ts_dSST = load_data()
+  df_ZonAnn_Ts_dSST = load_data_zonann()
 
   # Test de stationnarité
   adf_stat, p_value = perform_adfuller_test(df_ZonAnn_Ts_dSST['Glob'])
