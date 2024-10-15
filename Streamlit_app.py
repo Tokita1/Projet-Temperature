@@ -283,7 +283,7 @@ if page == pages[3] :
 
   # Vérifier si la série est stationnaire
   if p_value > 0.05:
-      df_ZonAnn_Ts_dSST['Glob'] = df_ZonAnn_Ts_dSST['Glob'].diff().dropna()
+      df_ZonAnn_Ts_dSST['Température Diff'] = df_ZonAnn_Ts_dSST['Glob'].diff().dropna()
 
   # Diviser les données en train et test
   train_size = int(0.8 * len(df_ZonAnn_Ts_dSST))
