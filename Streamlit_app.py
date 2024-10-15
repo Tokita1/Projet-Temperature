@@ -123,3 +123,90 @@ if page == pages[1] :
   Nous inclurons dans notre prochain rapport une section dédiée au machine learning, qui nous permettra de mieux comprendre et anticiper le réchauffement climatique.
   """
   st.write(texte_Pre_processing)
+
+##########################################################
+#VISUALISATION
+##########################################################
+
+if page == pages[2] :
+  st.write("### III. DataVisualisation")
+
+  st.write("### 1. Boite à moustache des écarts de température à la période de référence par saison et par période")
+
+  df_GLB_NASA = df_GLB_NASA.replace('***', float('NaN'))
+  df_GLB_NASA[df_GLB_NASA.columns[3:]] = df_GLB_NASA[df_GLB_NASA.columns[3:]].astype('float')
+  df_GLB_NASA['Year']=df_GLB_NASA.index
+
+  df_season = pd.melt(df_GLB_NASA, id_vars=['Year'], value_vars=['J-D','DJF','MAM','JJA','SON'])
+  df_season = df_season.replace(['J-D','DJF','MAM','JJA','SON'],['Year','Winter','Spring','Summer','Autumn'])
+  df_season = df_season.rename(columns={'variable': 'Season', 'value': 'Value'})
+  df_season['sub_Period'] = df_season['Year'].apply(lambda x: '1880 à 1940' if x < 1940 else ('1980 à 2000' if 1980 <= x < 2000 else ('2000 à 2024' if 2000 <= x <= 2024 else '1940 à 1980')))
+
+  fig1 = px.box(df_season, x="Season", y="Value", color="Season", facet_col = "sub_Period",
+            color_discrete_sequence=px.colors.qualitative.Dark24,
+             title = "boxplot par saison par période des écarts de températures",
+             labels={
+                     "Year": "Année",
+                     "Value": "Ecart de température",
+                     "Season": "Season",
+                     "sub_Period": "Période"
+                 },
+              width=1500)
+
+  st.plotly_chart(fig1)
+
+  st.write("### 2. Swarmplot des écarts de température à la période de référence par saison et par période")
+
+  fig2 = plt.figure()
+  sns.color_palette(palette = "OrRd", as_cmap=True)
+  sns.catplot(x = "Season", y = "Value", kind = "swarm", hue = 'Year', data = df_season, aspect=2, palette = "OrRd")
+  plt.xlabel('Saisons')
+  plt.ylabel('Ecart de températures')
+  st.pyplot(fig2)
+
+  st.write("### 2. Swarmplot des écarts de température à la période de référence par saison et par période")
+
+  fig2 = plt.figure()
+  sns.color_palette(palette = "OrRd", as_cmap=True)
+  sns.catplot(x = "Season", y = "Value", kind = "swarm", hue = 'Year', data = df_season, aspect=2, palette = "OrRd")
+  plt.xlabel('Saisons')
+  plt.ylabel('Ecart de températures')
+  st.pyplot(fig2)
+
+  st.write("### 3. Catplot des écarts de température à la période de référence par période et par saison")
+
+  fig3 = plt.figure()
+  sns.color_palette(palette = "OrRd", as_cmap=True)
+  sns.catplot(x = "sub_Period", y = "Value", hue = 'Season', data = df_season.loc[df_season['Season'] != "Year"], aspect=2,palette = "OrRd")
+  plt.xlabel('Périodes')
+  plt.ylabel('Ecart de températures')
+  st.pyplot(fig3)
+
+  st.write("### 4. Scatterplot des écarts de température à la période de référence par saison, regression linéaire")
+
+  fig4 = px.scatter(df_season, x="Year", y="Value", color="Season",
+                    trendline="ols", # ligne de lissage de nuage de points des moindres carrés
+                    facet_col='Season',
+                    labels={
+                     "Year": "Année",
+                     "Value": "Ecart de température",
+                     "Season": "Season",
+                     },
+                    title="Nuage de points avec régression des moindres carrés",
+                    width=1000, height=800)
+  st.plotly_chart(fig4)
+
+  st.write("### 5. Scatterplot des écarts de température à la période de référence par saison, regression localement pondérée")
+
+  fig5 = px.scatter(df_season, x="Year", y="Value", color="Season",
+                 trendline='lowess', # ligne de lissage de nuage de points localement pondérée
+                 facet_col='Season',
+                 facet_col_wrap=5,
+                 labels={
+                     "Year": "Année",
+                     "Value": "Ecart de température",
+                     "Season": "Season",
+                 },
+                 title="Evolution des écarts de températures avec lissage de nuage de points localement pondérée",
+                 width=1000, height=800)
+  st.plotly_chart(fig5)
