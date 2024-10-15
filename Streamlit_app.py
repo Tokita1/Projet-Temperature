@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
+import seaborn as sns
 
 df_github = pd.read_csv('owidco2data.csv', header=0)
 df_GLB_NASA = pd.read_csv('GLB.Ts+dSST.csv', header=1, index_col=1)
